@@ -29,7 +29,6 @@ window.onload = () => {
   function startWindowsEvents() {                                                     // ten kod jest kurwa kurwa kurwa chujowy jak kurwa nie wiem
     let remove;
     let setRemove = () => (remove = true);
-    let kurwo;
     canvas.addEventListener("mousemove", kurwo = (e1) => checkMousePos(e1));
     canvas.addEventListener("mouseout", setRemove);
     canvas.addEventListener("mouseup", setRemove);
