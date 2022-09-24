@@ -35,8 +35,8 @@ export class TicTacToe {
 
       this.grid[x][y] =
         ++counter % 2
-          ? (this.image.src = "/MainSite/EmbedProjects/TicTacToe/images/kolko.png")
-          : (this.image.src = "/MainSite/EmbedProjects/TicTacToe/images/krzyzyk.png");
+          ? (this.image.src = "/EmbedProjects/TicTacToe/images/kolko.png")
+          : (this.image.src = "/EmbedProjects/TicTacToe/images/krzyzyk.png");
       for (let i = 0; i < 3; i++) {
         if (
           this.grid[i][0] === this.grid[i][1] &&
