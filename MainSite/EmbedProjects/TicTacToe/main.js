@@ -13,15 +13,18 @@ export class TicTacToe {
     this.image = new Image();
     this.grid = [...Array(3)].map((e) => Array(3).fill(null));
     this.win = false;
-    let counter = 0, x, y;
+    let counter = 0,
+      x,
+      y;
     let clickHandler = (e) => {
-      if(!this.focus) return;
+      if (!this.focus) return;
       if (
-        e.offsetX - this.xFixed < 0 || 
+        e.offsetX - this.xFixed < 0 ||
         e.offsetY - this.yFixed < 0 ||
         e.offsetX - this.xFixed > 608 ||
         e.offsety - this.yFixed > 608
-      ) return;
+      )
+        return;
 
       if (e.offsetX - this.xFixed <= 608) y = 2;
       if (e.offsetX - this.xFixed <= 404) y = 1;
@@ -35,37 +38,22 @@ export class TicTacToe {
 
       this.grid[x][y] =
         ++counter % 2
-          ? (this.image.src = "/EmbedProjects/TicTacToe/images/kolko.png")
-          : (this.image.src = "/EmbedProjects/TicTacToe/images/krzyzyk.png");
+          ? (this.image.src = "./EmbedProjects/TicTacToe/images/kolko.png")
+          : (this.image.src = "./EmbedProjects/TicTacToe/images/krzyzyk.png");
+      
       for (let i = 0; i < 3; i++) {
-        if (
-          this.grid[i][0] === this.grid[i][1] &&
-          this.grid[i][0] === this.grid[i][2] &&
-          this.grid[i][0] != null
-        )
+        if (this.grid[i][0] === this.grid[i][1] && this.grid[i][0] === this.grid[i][2] && this.grid[i][0] != null)
           this.win = true;
-        if (
-          this.grid[0][i] === this.grid[1][i] &&
-          this.grid[0][i] === this.grid[2][i] &&
-          this.grid[0][i] != null
-        )
+        if (this.grid[0][i] === this.grid[1][i] && this.grid[0][i] === this.grid[2][i] && this.grid[0][i] != null)
           this.win = true;
       }
-      if (
-        this.grid[0][0] === this.grid[1][1] &&
-        this.grid[0][0] === this.grid[2][2] &&
-        this.grid[0][0] != null
-      )
+      if (this.grid[0][0] === this.grid[1][1] && this.grid[0][0] === this.grid[2][2] && this.grid[0][0] != null)
         this.win = true;
-      if (
-        this.grid[0][2] === this.grid[1][1] &&
-        this.grid[0][2] === this.grid[2][0] &&
-        this.grid[0][2] != null
-      )
+      if (this.grid[0][2] === this.grid[1][1] && this.grid[0][2] === this.grid[2][0] && this.grid[0][2] != null)
         this.win = true;
-    }
+    };
     TicTacToe.events.push(clickHandler);
-    canvas.addEventListener('mousedown', [...TicTacToe.events].pop(), false);
+    canvas.addEventListener("mousedown", [...TicTacToe.events].pop(), false);
   }
   draw(canvas, data) {
     this.context.fillStyle = "#FFFFFF";

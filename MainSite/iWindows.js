@@ -1,5 +1,7 @@
 import { TicTacToe } from "./EmbedProjects/TicTacToe/main.js";
 import { Snake } from "./EmbedProjects/Snake/main.js";
+import { GrayscaleImage } from "./EmbedProjects/GrayscaleImage/main.js";
+
 
 class InteractiveWindow {
   constructor(x, y, width, height, name) {
@@ -47,11 +49,14 @@ window.onload = () => {
 
   const iWindows = [];
 
+  // iWindows.push(
+  //   new EmbedInteractiveWindow(10, 30, 608, 608, "TicTacToe", new TicTacToe(), 100)
+  // );
+  // iWindows.push(
+  //   new EmbedInteractiveWindow(700, 30, 500, 500, "Snake", new Snake(), 200)
+  // );
   iWindows.push(
-    new EmbedInteractiveWindow(10, 30, 608, 608, "TicTacToe", new TicTacToe(), 100)
-  );
-  iWindows.push(
-    new EmbedInteractiveWindow(700, 30, 500, 500, "Snake", new Snake(), 80)
+    new EmbedInteractiveWindow(600, 100, 500, 750, "GrayscaleImage", new GrayscaleImage(), 200)
   );
 
   const tools = {
@@ -223,8 +228,10 @@ window.onload = () => {
   tools.startWindowsEvents();
   tools.startProjects(); // do poprawy
 
+  console.log(canvas);
   let frames = 0;
   let interval = setInterval(() => {
+    let start = Date.now();
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     tools.refreshProjects(frames);
