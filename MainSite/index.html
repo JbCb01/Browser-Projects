@@ -9,15 +9,26 @@
 </head>
 <body>
   <div id="container-menu">
-    <div id="sticky-menu"></div>
-    <div id="placeholder-menu"></div>
+    <div id="sticky-menu">
+      <!-- <div id="logo">Miejsce na logo</div> -->
+      <div id="show-arrow">
+        <div class="arrowSliding">
+          <div class="arrow"></div>
+        </div>
+        <div class="arrowSliding delay1">
+          <div class="arrow"></div>
+        </div>
+        <div class="arrowSliding delay2">
+          <div class="arrow"></div>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="container-site">
     <canvas id="main-canvas"></canvas>
+    <div id="footer">Made with pure CSS, HTML & JS!</div>
   </div>
-  <div id="footer">
-    Hand-Writed by Jakub Kownacki
-  </div>
-  <script src="./interactiveWindows.js"></script>
+  <script src="./iWindows.js" type="module"></script>
+  <script src="./main.js" type="module"></script>
 </body>
 </html>
