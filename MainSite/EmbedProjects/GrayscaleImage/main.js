@@ -1,48 +1,84 @@
 export class GrayscaleImage {
-  static events = []
+  static events = [];
   start(canvas, data) {
     this.canvas = canvas;
     this.context = this.canvas.getContext("2d");
     this.colorImage = new Image();
     this.colorImage.src = "./EmbedProjects/GrayscaleImage/color.jpg";
-    this.colorImage.width = 500;
-    this.colorImage.height = 375;
+    this.isLoaded = false;
+    // this.colorImage.width = 500;
+    // this.colorImage.height = 375;
     let loadedImage = (e) => {
-      this.context.drawImage(this.colorImage, 0, 0);
-      this.grayImage = [];
-      // this.grayImage = new Uint8ClampedArray(); <----------------- 
-      this.colorImage.data = this.context.getImageData(0, 0, 200, 200).data;
-      console.log(this.colorImage.data);
+      this.context.drawImage(this.colorImage, data.xFixed, data.yFixed);
+
+      const colorImageCArray = this.context.getImageData(
+        data.xFixed,
+        data.yFixed,
+        this.colorImage.width,
+        this.colorImage.height
+      ).data;
       
-      for(let i = 0; i < 200 * 200 * 4; i+=4){
-          let color = 
-            0.299 * this.colorImage.data[i] + 
-            0.587 * this.colorImage.data[i + 1] + 
-            0.114 * this.colorImage.data[i + 2];
-          this.grayImage.push(Math.round(color));
+      // make it gray
+      const grayImageCArray = new Uint8ClampedArray(colorImageCArray.length);
+      for (let i = 0; i < grayImageCArray.length; i += 4) {
+        let color =
+          0.299 * colorImageCArray[i] + 0.587 * colorImageCArray[i + 1] + 0.114 * colorImageCArray[i + 2];
+        grayImageCArray.set([Math.round(color), Math.round(color), Math.round(color), 255], i);
       }
+      
+      // average color
+      this.AVG = {
+        RAvg: 0, 
+        GAvg: 0, 
+        BAvg: 0
+      }
+      for (let i = 0; i < colorImageCArray.length; i += 4) {
+        this.AVG.RAvg += colorImageCArray[i];
+        this.AVG.GAvg += colorImageCArray[i + 1];
+        this.AVG.BAvg += colorImageCArray[i + 2];
+      }
+      this.AVG.RAvg = this.AVG.RAvg / (colorImageCArray.length / 4);
+      this.AVG.GAvg = this.AVG.GAvg / (colorImageCArray.length / 4);
+      this.AVG.BAvg = this.AVG.BAvg / (colorImageCArray.length / 4);
+
+      function getAvgColor(x, y, rowLength){ // all in pixels
+        x = x * 4;
+        y = y * 4;
+        const AVG = [];
+        // const AVG = {
+        //   RAvg: 0, 
+        //   GAvg: 0, 
+        //   BAvg: 0
+        // }
+        for (let i = 0; i < colorImageCArray.length / rowLength; i += 4) {
+          for(let j = 0; j < rowLength; j++){
+            colorImageCArray[i * 4 + j]                                         //#### #### #### #### #### ####
+            
+          }                                                                     //#### #### #### 
+        }                                                                       //#### #### ####        
+      }
+      console.log(getAvgColor(10, 5, 500));
+
+
+      
+      this.grayImageData = new ImageData(grayImageCArray, this.colorImage.width);
+      this.colorImageData = new ImageData(colorImageCArray, this.colorImage.width);
+      
+      this.isLoaded = true;
     };
     GrayscaleImage.events.push(loadedImage);
     this.colorImage.addEventListener("load", [...GrayscaleImage.events].pop(), false);
   }
-  refresh(canvas, data) {
-    // this.grayImage = 0.299R + 0.587G + 0.114B
-  }
+  refresh(canvas, data) {}
   draw(canvas, data) {
-    if(this.grayImage == undefined) return;
-    this.context.drawImage(this.colorImage, 0, 0);
-    let iter = 0;
-    for(let i = 0; i < 200; i++){
-      for(let j = 0; j < 200; j++){
-        this.context.fillStyle = `rgb(
-          ${this.grayImage[iter]},
-          ${this.grayImage[iter]},
-          ${this.grayImage[iter]}
-        )`;
-        this.context.fillRect(j, i + 375, 1, 1);
-        iter++;
-      }
-    }
-    // this.context.drawImage(this.grayImage, 0, 0);
+    if (!this.isLoaded) return;
+    this.context.putImageData(this.colorImageData, data.xFixed, data.yFixed);
+    this.context.putImageData(this.grayImageData, data.xFixed, this.colorImage.height + data.yFixed);
+    this.context.fillStyle = `rgb(
+      ${Math.round(this.AVG.RAvg)},
+      ${Math.round(this.AVG.GAvg)},
+      ${Math.round(this.AVG.BAvg)}
+    )`
+    this.context.fillRect(this.colorImage.width, 0, this.colorImage.width, this.colorImage.height)
   }
 }

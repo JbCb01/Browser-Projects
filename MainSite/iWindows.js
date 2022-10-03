@@ -2,7 +2,6 @@ import { TicTacToe } from "./EmbedProjects/TicTacToe/main.js";
 import { Snake } from "./EmbedProjects/Snake/main.js";
 import { GrayscaleImage } from "./EmbedProjects/GrayscaleImage/main.js";
 
-
 class InteractiveWindow {
   constructor(x, y, width, height, name) {
     InteractiveWindow.numInstances = (InteractiveWindow.numInstances || 0) + 1;
@@ -45,6 +44,8 @@ class EmbedInteractiveWindow extends InteractiveWindow {
 window.onload = () => {
   const canvas = document.querySelector("#main-canvas");
   const context = canvas.getContext("2d");
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
   canvas.focus();
 
   const iWindows = [];
@@ -55,9 +56,7 @@ window.onload = () => {
   // iWindows.push(
   //   new EmbedInteractiveWindow(700, 30, 500, 500, "Snake", new Snake(), 200)
   // );
-  iWindows.push(
-    new EmbedInteractiveWindow(600, 100, 500, 750, "GrayscaleImage", new GrayscaleImage(), 200)
-  );
+  iWindows.push(new EmbedInteractiveWindow(450, 100, 1000, 750, "GrayscaleImage", new GrayscaleImage(), 200));
 
   const tools = {
     titleBarHeight: 20,
@@ -143,20 +142,10 @@ window.onload = () => {
         let iWindow = iWindows[i];
 
         context.fillStyle = "#000000";
-        context.fillRect(
-          iWindow.x - 1,
-          iWindow.y - 22,
-          iWindow.width + 2,
-          iWindow.height + 23
-        );
+        context.fillRect(iWindow.x - 1, iWindow.y - 22, iWindow.width + 2, iWindow.height + 23);
 
         context.fillStyle = "#FFFFFF";
-        context.fillRect(
-          iWindow.x,
-          iWindow.y - this.titleBarHeight - 1,
-          iWindow.width,
-          this.titleBarHeight
-        );
+        context.fillRect(iWindow.x, iWindow.y - this.titleBarHeight - 1, iWindow.width, this.titleBarHeight);
         context.fillStyle = "#FF3333";
         context.fillRect(iWindow.x + 5, iWindow.y - 16, 10, 10);
         context.fillStyle = "#FFBB33";
@@ -185,8 +174,7 @@ window.onload = () => {
               let blockOffsetX = e1.offsetX - block.x;
               let blockOffsetY = e1.offsetY - block.y;
               canvas.addEventListener("mousemove", function mousemoveHandler(e2) {
-                if (remove)
-                  return canvas.removeEventListener("mousemove", mousemoveHandler);
+                if (remove) return canvas.removeEventListener("mousemove", mousemoveHandler);
                 block.x = e2.offsetX - blockOffsetX;
                 block.y = e2.offsetY - blockOffsetY;
               });
@@ -212,7 +200,7 @@ window.onload = () => {
     refreshProjects(frames) {
       for (let i = iWindows.length - 1; i >= 0; i--) {
         if (iWindows[i] instanceof EmbedInteractiveWindow) {
-          if(!(frames % iWindows[i].frames)){
+          if (!(frames % iWindows[i].frames)) {
             iWindows[i].refresh(canvas, this.getData(i));
           }
         }
@@ -228,7 +216,6 @@ window.onload = () => {
   tools.startWindowsEvents();
   tools.startProjects(); // do poprawy
 
-  console.log(canvas);
   let frames = 0;
   let interval = setInterval(() => {
     let start = Date.now();
